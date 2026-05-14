@@ -19,9 +19,10 @@ git clone https://github.com/jangyuxue/skill-auto-maintain.git
 cp -r skill-auto-maintain/skill-auto-maintain ~/.hermes/skills/user-created/
 ```
 
-Then run `hermes` and tell the agent:
+Then in `hermes`:
 
-> Run skill auto maintenance.
+- Type `/skill` and select **skill-auto-maintain** from the list, or
+- Tell the agent: *"Run skill auto maintenance"*
 
 
 ## What It Does
