@@ -42,7 +42,7 @@ Scans all skill directories under `~/.hermes/skills/` and runs four phases:
 
 ```bash
 ~/.hermes/hermes-agent/venv/bin/python \
-  ~/.hermes/skills/user-created/skill-auto-maintain/scripts/maintain.py
+  ~/.hermes/skills/user-created/skill-auto-maintain/maintain.py
 ```
 
 ## Registration Format
