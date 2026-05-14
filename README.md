@@ -7,6 +7,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href="#"><img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Python 3.8+"></a>
+  <strong>English</strong> · <a href="README_CN.md">中文</a>
 </p>
 
 > **Your `~/.hermes/skills/` is a mess.** Agent-created skills land everywhere — `creative/`, `devops/`, `auto-generated/` — with no registry, no duplicate detection, and no quality control.  
