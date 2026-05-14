@@ -12,7 +12,7 @@
 </p>
 
 > **你的 `~/.hermes/skills/` 一团乱麻。** Agent 创建的技能散落在 `creative/`、`devops/`、`auto-generated/` 等目录——没有注册表、没有重复检测、没有质量控制。  
-> Skill Auto Maintain 扫描一切，将走丢技能搬到 `user_skills/`，注册登记，检测重复，修复异常的 SKILL.md。一条命令，零配置。
+> Skill Auto Maintain 扫描一切，将走丢技能搬到 `user_skills/`，注册登记，检测重复，修复异常的 SKILL.md。一条命令，零配置。**零外部依赖——纯 Python 3 标准库。**
 
 <br>
 

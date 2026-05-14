@@ -12,7 +12,7 @@
 </p>
 
 > **Your `~/.hermes/skills/` is a mess.** Agent-created skills are scattered across `creative/`, `devops/`, `auto-generated/` — with no registry, no duplicate detection, no quality control.  
-> Skill Auto Maintain scans everything, moves orphans to `user_skills/`, registers them, detects duplicates, and fixes broken SKILL.md files. One command, zero config.
+> Skill Auto Maintain scans everything, moves orphans to `user_skills/`, registers them, detects duplicates, and fixes broken SKILL.md files. One command, zero config. **Zero external dependencies — pure Python 3 standard library.**
 
 <br>
 
