@@ -7,11 +7,83 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <a href="#"><img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Python 3.8+"></a>
+  <a href="#"><img src="https://img.shields.io/badge/status-stable-brightgreen" alt="Status"></a>
   <a href="README.md">English</a> · <strong>中文</strong>
 </p>
 
-> **你的 `~/.hermes/skills/` 一团乱麻。** Agent 创建的技能散落在 `creative/`、`devops/`、`auto-generated/` 等各个目录——没有注册表、没有重复检测、没有质量控制。  
+> **你的 `~/.hermes/skills/` 一团乱麻。** Agent 创建的技能散落在 `creative/`、`devops/`、`auto-generated/` 等目录——没有注册表、没有重复检测、没有质量控制。  
 > Skill Auto Maintain 扫描一切，将走丢技能搬到 `user_skills/`，注册登记，检测重复，修复异常的 SKILL.md。一条命令，零配置。
+
+<br>
+
+```mermaid
+flowchart LR
+    A[扫描] --> B[比对]
+    B --> C[优化]
+    C --> D[报告]
+    
+    A -.-> A1["扫描所有技能目录<br>跳过系统内置"]
+    B -.-> B1["4 维相似度评分<br>标记合并候选"]
+    C -.-> C1["修复 SKILL.md 格式<br>检查内容质量"]
+    D -.-> D1["专业执行报告"]
+    
+    style A fill:#1e3a5f,stroke:#3b82f6,color:#fff
+    style B fill:#1e3a5f,stroke:#3b82f6,color:#fff
+    style C fill:#1e3a5f,stroke:#3b82f6,color:#fff
+    style D fill:#1e3a5f,stroke:#3b82f6,color:#fff
+    style A1 fill:#1e293b,stroke:#475569,color:#94a3b8
+    style B1 fill:#1e293b,stroke:#475569,color:#94a3b8
+    style C1 fill:#1e293b,stroke:#475569,color:#94a3b8
+    style D1 fill:#1e293b,stroke:#475569,color:#94a3b8
+```
+
+<br>
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### ❌ 之前
+
+```
+~/.hermes/skills/
+├── creative/
+│   ├── architecture-diagram/
+│   └── my-scraper        
+├── devops/
+│   ├── kanban-worker/
+│   └── my-pipeline       
+└── auto-generated/
+    └── old-tool/
+```
+
+_走丢技能散落各处。无注册表。无质量检查。_
+
+</td>
+<td width="50%" valign="top">
+
+### ✅ 之后
+
+```
+~/.hermes/skills/
+├── creative/
+│   └── architecture-diagram/
+├── devops/
+│   └── kanban-worker/
+└── user_skills/
+    ├── my-scraper/
+    ├── my-pipeline/
+    ├── old-tool/
+    └── user_skills.json
+```
+
+_全部集中在 user_skills/。已注册。已追踪。_
+
+</td>
+</tr>
+</table>
+
+<br>
 
 ## 快速上手
 
@@ -25,40 +97,58 @@ cp -r skill-auto-maintain/skill-auto-maintain ~/.hermes/skills/user-created/
 - 输入 `/skill` 从列表选择 **skill-auto-maintain**
 - 或者告诉 agent：*"运行技能自动维护"*
 
+<br>
+
 ## 功能
 
-- 扫描 `~/.hermes/skills/` 下所有目录
-- 跳过系统内置技能（通过 `.bundled_manifest` 识别）
-- 将走丢技能搬到 `user_skills/` 并注册
-- 通过相似度评分检测重复/重叠技能
-- 修复 SKILL.md 格式，检查内容质量
+<table>
+<tr>
+<td width="33%" align="center">
 
-## 前后对比
+**🔍 扫描**
+
+遍历所有目录。  
+跳过系统内置。  
+迁移走丢技能。
+
+</td>
+<td width="33%" align="center">
+
+**📊 比对**
+
+4 维相似度评分。  
+检测合并候选。  
+仅报告，不自动合并。
+
+</td>
+<td width="33%" align="center">
+
+**✨ 优化**
+
+修复 SKILL.md 格式。  
+内容质量检查。  
+专业执行报告。
+
+</td>
+</tr>
+</table>
+
+<br>
+
+## 项目结构
 
 ```
-❌ 之前                                 ✅ 之后
-~/.hermes/skills/                      ~/.hermes/skills/
-├── creative/                          ├── creative/  (仅保留内置)
-│   ├── architecture-diagram/          ├── devops/     (仅保留内置)
-│   └── my-scraper/        ← 走丢     └── user_skills/
-├── devops/                                ├── my-scraper/
-│   └── my-pipeline/          ← 走丢        ├── my-pipeline/
-└── auto-generated/                       └── user_skills.json
-    └── old-tool/
-```
-
-## 文件结构
-
-```
-skill-auto-maintain/                 ← 克隆此仓库
+skill-auto-maintain/
 ├── README.md
-├── README_CN.md                     ← 中文版
+├── README_CN.md
 ├── LICENSE
 ├── CHANGELOG.md
-└── skill-auto-maintain/             ← 将此文件夹复制到 skills/
+└── skill-auto-maintain/         ← 将此文件夹复制到 skills/
     ├── SKILL.md
     └── maintain.py
 ```
+
+<br>
 
 ## 许可证
 
