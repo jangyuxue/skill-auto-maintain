@@ -17,12 +17,12 @@
 ```bash
 git clone https://github.com/jangyuxue/skill-auto-maintain.git
 cp -r skill-auto-maintain/skill-auto-maintain ~/.hermes/skills/user-created/
-
-~/.hermes/hermes-agent/venv/bin/python \
-  ~/.hermes/skills/user-created/skill-auto-maintain/maintain.py
 ```
 
-No dependencies. No configuration. Standard library only.
+Then run `hermes` and tell the agent:
+
+> Run skill auto maintenance.
+
 
 ## What It Does
 
