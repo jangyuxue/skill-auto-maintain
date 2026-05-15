@@ -3,7 +3,7 @@
 ### Overview
 
 v2.0.0 adds detection of standalone skills placed directly at `skills/<name>/`
-(e.g. `skills/soul-governance/` with its own `SKILL.md`), which were previously
+(e.g. `skills/my-custom-tool/` with its own `SKILL.md`), which were previously
 silently ignored by the scanner.
 
 ### What Changed
@@ -14,7 +14,7 @@ silently ignored by the scanner.
    that contain a `SKILL.md` — e.g. `creative/my-skill/SKILL.md`
 
 2. **Standalone check** (new): after the sub-skill scan, checks if the directory
-   itself has a `SKILL.md` directly inside — e.g. `skills/soul-governance/SKILL.md`
+   itself has a `SKILL.md` directly inside — e.g. `skills/my-custom-tool/SKILL.md`
 
 Both results are merged into the same `{skill_name: skill_path}` dict, so existing
 migration, registration, and merge detection logic handles standalone skills
@@ -32,7 +32,7 @@ standalone skills were completely invisible to the tool.
 | Scenario | Before v2.0.0 | After v2.0.0 |
 |----------|---------------|--------------|
 | `skills/creative/my-skill/SKILL.md` | ✅ Detected | ✅ Detected |
-| `skills/soul-governance/SKILL.md` | ❌ Silently ignored | ✅ Migrated to `user_skills/` |
+| `skills/my-custom-tool/SKILL.md` | ❌ Silently ignored | ✅ Migrated to `user_skills/` |
 | `skills/auto-generated/my-skill/SKILL.md` | ✅ Detected (sub-skill scan) | ✅ Detected (both scans) |
 
 ### Upgrade

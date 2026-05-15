@@ -11,7 +11,7 @@
 
 ### Fixed
 
-- Skills like `skills/soul-governance/` with SKILL.md at the top level were
+- Skills like `skills/my-custom-tool/` with SKILL.md at the top level were
   silently ignored because `scan_skills_in_dir()` only looks for subdirectories.
   Now each directory is checked for its own SKILL.md after the sub-skill scan.
 

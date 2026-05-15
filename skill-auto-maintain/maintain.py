@@ -506,7 +506,7 @@ def scan_all_directories():
     Detects two types:
     1. Sub-skills inside a category directory (e.g. creative/my-skill/)
     2. Standalone skills directly at skills/<name>/ with their own SKILL.md
-       (e.g. skills/soul-governance/SKILL.md)
+       (e.g. skills/my-custom-tool/SKILL.md)
 
     Returns dict of {category_path: {skill_name: skill_path}}.
     """
@@ -541,6 +541,20 @@ def phase_scan_and_migrate(registry):
     Returns dict of report data.
     """
     print("  [Scan] Scanning all skill directories...")
+    if not os.path.exists(BUNDLED_MANIFEST):
+        print("    [ERROR] .bundled_manifest not found — cannot identify bundled skills,")
+        print("            aborting scan to prevent accidental mass skill relocation.")
+        print("    Fix: create ~/.hermes/skills/.bundled_manifest with your bundled")
+        print("         skill names (one per line, format: 'name:path') to enable")
+        print("         orphan detection and avoid accidental migrations.")
+        return {
+            "categories_scanned": 0,
+            "total_found": 0,
+            "bundled_skipped": 0,
+            "orphans_migrated": 0,
+            "already_registered": [],
+            "migrated": [],
+        }
     bundled = load_bundled_manifest()
     all_found = {}
     orphan_count = 0
