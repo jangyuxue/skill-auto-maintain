@@ -25,7 +25,7 @@ BUNDLED_MANIFEST = os.path.join(SKILLS_BASE, ".bundled_manifest")
 USER_SKILLS_DIR = os.path.join(SKILLS_BASE, "user_skills")
 USER_SKILLS_JSON = os.path.join(USER_SKILLS_DIR, "user_skills.json")
 
-EXCLUDED_DIRS = {"user_skills"}
+EXCLUDED_DIRS = set()
 
 MERGE_THRESHOLD = 0.30
 
@@ -597,6 +597,18 @@ def phase_scan_and_migrate(registry):
             orphan_count += 1
             migrated.append(f"✓ {skill_name}: {cat_name}/ → user_skills/")
 
+    # ── Registry sync: mark deleted skills ──
+    unregistered = []
+    for entry in list(registry.get("skills", [])):
+        ename = entry["name"]
+        edir = os.path.join(USER_SKILLS_DIR, ename)
+        if entry.get("status") in ("active", None) and not os.path.isdir(edir):
+            entry["status"] = "deleted"
+            entry["last_updated"] = datetime.now().isoformat()
+            unregistered.append(ename)
+    if unregistered:
+        print(f"  [Registry] Marked deleted: {', '.join(unregistered)}")
+
     return {
         "categories_scanned": len(categories),
         "total_found": len(all_found),
@@ -604,6 +616,7 @@ def phase_scan_and_migrate(registry):
         "orphans_migrated": orphan_count,
         "already_registered": already_registered,
         "migrated": migrated,
+        "unregistered": unregistered,
     }
 
 
@@ -704,6 +717,10 @@ def generate_report(scan_result, compare_result, optimise_result):
     lines.append(f"    Total skills found:     {scan_result['total_found']}")
     lines.append(f"    Bundled skills skipped: {scan_result['bundled_skipped']}")
     lines.append(f"    Orphans migrated:       {scan_result['orphans_migrated']}")
+    if scan_result['unregistered']:
+        lines.append(f"    Skills marked deleted:  {len(scan_result['unregistered'])}")
+        for u in scan_result['unregistered']:
+            lines.append(f"      - {u}")
     if scan_result["migrated"]:
         for m in scan_result["migrated"]:
             lines.append(f"    {m}")
