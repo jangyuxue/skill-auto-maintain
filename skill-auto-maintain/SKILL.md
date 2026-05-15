@@ -109,3 +109,9 @@ All format changes and quality warnings are reported in the final summary.
 |------|---------|
 | `maintain.py` | The maintenance script (v1.1.0) |
 | `SKILL.md` | This file — skill documentation for the agent |
+
+## References
+
+| Reference | When to Load |
+|-----------|-------------|
+| `references/session-recovery-guide.md` | After accidental skill deletion: recover files from session history |
