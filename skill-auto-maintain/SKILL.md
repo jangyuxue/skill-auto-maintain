@@ -1,7 +1,7 @@
 ---
 name: skill-auto-maintain
 description: "Automated lifecycle management for non-bundled Hermes skills. Scans all skill directories, migrates orphans to user_skills/, registers in user_skills.json, detects merge candidates via multi-dimensional similarity, and optimises SKILL.md format. No SOUL framework dependency — works on any standard Hermes Agent installation."
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 license: MIT
 metadata:
@@ -19,10 +19,18 @@ Scans all skill directories under `~/.hermes/skills/` and runs four phases:
 
 | Phase | Description |
 |-------|-------------|
-| [Scan] | Identifies non-bundled skills, migrates misplaced ones to `user_skills/`, registers them in `user_skills.json` |
+| [Scan] | Identifies non-bundled skills, migrates misplaced ones to `user_skills/`, registers them in `user_skills.json`, **marks registry entries as `deleted` when their skill directory no longer exists on disk** |
 | [Compare] | Pairwise multi-dimensional similarity scoring to detect merge candidates |
 | [Optimise] | Fixes SKILL.md formatting and checks content quality (triggers, tags, description, structure) |
 | [Report] | Generates a comprehensive professional summary of all actions taken |
+
+## Scan Scope
+
+The tool scans **all** directories under `~/.hermes/skills/` — including `user_skills/` itself. This means:
+
+- **New skills placed directly into `user_skills/`** get auto-detected and registered on the next run.
+- **Skills deleted from `user_skills/`** get their registry entry marked as `deleted` (not removed — preserves audit trail).
+- The tool's own directory (`skill-auto-maintain/`) is a regular skill directory and gets processed like any other.
 
 ## Directory Structure
 
@@ -42,21 +50,29 @@ Scans all skill directories under `~/.hermes/skills/` and runs four phases:
 
 ```bash
 ~/.hermes/hermes-agent/venv/bin/python \
-  ~/.hermes/skills/user-created/skill-auto-maintain/maintain.py
+  ~/.hermes/skills/user_skills/skill-auto-maintain/maintain.py
 ```
 
-## Registration Format
+## Scan Scope Change (v1.1.0)
 
-Each skill in `user_skills.json` includes:
+Unlike earlier versions that excluded `user_skills/` from scanning, **v1.1.0 now includes it**. This means:
+
+- **New skills placed directly into `user_skills/`** get auto-detected and registered in `user_skills.json` on the next run.
+- **Skills deleted from `user_skills/`** get their registry entry marked as `deleted` (not removed — audit trail preserved).
+- The tool no longer skips its own directory, so self-migration from root → `user_skills/` is expected and handled correctly.
+
+## Registration Format
 
 | Field | Description |
 |-------|-------------|
 | `name` | Skill directory name |
 | `description` | Description from SKILL.md frontmatter |
-| `status` | `active` or `merged` |
+| `status` | `active` (on disk + registered), `merged` (absorbed into another), or `deleted` (directory removed) |
 | `origin` | Migration source path or `merged: [skill-a, skill-b]` |
 | `optimized` | Whether SKILL.md has been format-optimised |
 | `modification_count` | Number of times the entry has been modified |
+| `created` | ISO timestamp of first registration |
+| `last_updated` | ISO timestamp of last modification |
 
 ## Merge Detection
 
@@ -91,5 +107,5 @@ All format changes and quality warnings are reported in the final summary.
 
 | File | Purpose |
 |------|---------|
-| `scripts/maintain.py` | The maintenance script (v1.0.0) |
+| `maintain.py` | The maintenance script (v1.1.0) |
 | `SKILL.md` | This file — skill documentation for the agent |
