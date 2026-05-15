@@ -78,16 +78,27 @@ def get_skill_name_from_frontmatter(skill_path):
 
 
 def get_skill_description(skill_path):
-    """Extract `description:` from SKILL.md frontmatter."""
+    """Extract `description:` from SKILL.md frontmatter (line-by-line parsing)."""
     skill_md = os.path.join(skill_path, "SKILL.md")
     if not os.path.exists(skill_md):
         return ""
     with open(skill_md, "r", encoding="utf-8") as f:
         content = f.read(2000)
-    m = re.search(r'description:\s*["\']?(.*?)["\']?\s*(?:\n|platforms|version|author|tags)', content)
-    if m:
-        desc = m.group(1).strip().rstrip("\"'")
-        return desc if len(desc) < 500 else desc[:500]
+
+    # Find frontmatter block (between --- markers)
+    if not content.startswith("---"):
+        return ""
+    end_fm = content.find("---", 3)
+    if end_fm < 0:
+        return ""
+    frontmatter = content[3:end_fm]
+
+    # Line-by-line parse
+    for line in frontmatter.split("\n"):
+        line = line.strip()
+        if line.startswith("description:"):
+            desc = line[len("description:"):].strip().strip("\"'")
+            return desc[:500]
     return ""
 
 
@@ -501,7 +512,7 @@ def mark_optimized(registry, name):
 # ══════════════════════════════════════════════════════════════════════════
 
 def scan_all_directories():
-    """Scan all skill directories under SKILLS_BASE, excluding hidden and user_skills.
+    """Scan all skill directories under SKILLS_BASE, excluding hidden dirs.
 
     Detects two types:
     1. Sub-skills inside a category directory (e.g. creative/my-skill/)
@@ -786,7 +797,7 @@ def generate_report(scan_result, compare_result, optimise_result):
 def main():
     print()
     print("=" * 66)
-    print("  Skill Auto Maintain v1.0")
+    print("  Skill Auto Maintain v1.1.0")
     print("  Automated lifecycle management for non-bundled Hermes skills")
     print("=" * 66)
 
@@ -804,6 +815,15 @@ def main():
 
     # Phase 3: Optimise
     optimise_result = phase_optimize(registry)
+
+    # Snapshot: backup registry before saving
+    HISTORY_DIR = os.path.join(USER_SKILLS_DIR, ".history")
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    snapshot_path = os.path.join(HISTORY_DIR, f"user_skills_{ts}.json")
+    with open(snapshot_path, "w", encoding="utf-8") as f:
+        json.dump(registry, f, indent=2, ensure_ascii=False)
+    print(f"  [Snapshot] Saved: {snapshot_path}")
 
     # Save registry
     save_registry(registry)
