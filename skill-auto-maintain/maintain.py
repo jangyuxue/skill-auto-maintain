@@ -503,6 +503,11 @@ def mark_optimized(registry, name):
 def scan_all_directories():
     """Scan all skill directories under SKILLS_BASE, excluding hidden and user_skills.
 
+    Detects two types:
+    1. Sub-skills inside a category directory (e.g. creative/my-skill/)
+    2. Standalone skills directly at skills/<name>/ with their own SKILL.md
+       (e.g. skills/soul-governance/SKILL.md)
+
     Returns dict of {category_path: {skill_name: skill_path}}.
     """
     categories = {}
@@ -517,7 +522,14 @@ def scan_all_directories():
         item_path = os.path.join(SKILLS_BASE, item)
         if not os.path.isdir(item_path):
             continue
+
         skills = scan_skills_in_dir(item_path)
+
+        # Case 2: The directory itself is a standalone skill with SKILL.md directly inside
+        skill_md = os.path.join(item_path, "SKILL.md")
+        if os.path.exists(skill_md):
+            skills[item] = item_path
+
         if skills:
             categories[item_path] = skills
     return categories
