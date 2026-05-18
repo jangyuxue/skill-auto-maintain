@@ -1,7 +1,7 @@
 ---
 name: skill-auto-maintain
 description: "Automated lifecycle management for non-bundled Hermes skills. Scans all skill directories, migrates orphans to user_skills/, registers in user_skills.json, detects merge candidates via multi-dimensional similarity, and optimises SKILL.md format. No SOUL framework dependency — works on any standard Hermes Agent installation."
-version: 1.1.0
+version: 2.0.0
 author: Hermes Agent
 license: MIT
 metadata:

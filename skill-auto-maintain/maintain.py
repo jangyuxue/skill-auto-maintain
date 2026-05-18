@@ -797,7 +797,7 @@ def generate_report(scan_result, compare_result, optimise_result):
 def main():
     print()
     print("=" * 66)
-    print("  Skill Auto Maintain v1.1.0")
+    print("  Skill Auto Maintain v2.0.0")
     print("  Automated lifecycle management for non-bundled Hermes skills")
     print("=" * 66)
 

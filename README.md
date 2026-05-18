@@ -89,7 +89,7 @@ _All orphans in one place. Registered. Tracked._
 
 ```bash
 git clone https://github.com/jangyuxue/skill-auto-maintain.git
-cp -r skill-auto-maintain/skill-auto-maintain ~/.hermes/skills/user-created/
+cp -r skill-auto-maintain/skill-auto-maintain ~/.hermes/skills/
 ```
 
 Then in `hermes`:

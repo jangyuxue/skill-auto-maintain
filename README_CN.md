@@ -89,7 +89,7 @@ _全部集中在 user_skills/。已注册。已追踪。_
 
 ```bash
 git clone https://github.com/jangyuxue/skill-auto-maintain.git
-cp -r skill-auto-maintain/skill-auto-maintain ~/.hermes/skills/user-created/
+cp -r skill-auto-maintain/skill-auto-maintain ~/.hermes/skills/
 ```
 
 然后在 `hermes` 里：
