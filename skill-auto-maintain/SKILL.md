@@ -7,6 +7,14 @@ license: MIT
 metadata:
   hermes:
     tags: [maintenance, skills, cleanup, registry, standalone]
+    triggers:
+      - "run skill auto maintenance"
+      - "run skill auto maintain"
+      - "技能自动维护"
+      - "整理技能"
+      - "清理技能"
+      - "maintain skills"
+      - "clean up skills"
 ---
 
 # Skill Auto Maintain
@@ -23,6 +31,22 @@ Scans all skill directories under `~/.hermes/skills/` and runs four phases:
 | [Compare] | Pairwise multi-dimensional similarity scoring to detect merge candidates |
 | [Optimise] | Fixes SKILL.md formatting and checks content quality (triggers, tags, description, structure) |
 | [Report] | Generates a comprehensive professional summary of all actions taken |
+
+## How to Execute
+
+This skill requires running `maintain.py` via the Hermes venv Python. When the user asks to run skill auto maintenance:
+
+1. **Determine the script path:**
+   - First run (before self-migration): `~/.hermes/skills/skill-auto-maintain/maintain.py`
+   - After self-migration (subsequent runs): `~/.hermes/skills/user_skills/skill-auto-maintain/maintain.py`
+   - Try the `user_skills/` path first since most users will already have run it once
+2. **Run the script:**
+   ```
+   ~/.hermes/hermes-agent/venv/bin/python <script_path>
+   ```
+3. **Return the full report output** to the user — it contains all scan, migration, comparison, and optimisation results.
+
+> **Note on self-migration:** The first run automatically moves the tool's own directory from `skills/skill-auto-maintain/` to `user_skills/skill-auto-maintain/`. This is expected — after one run, the tool lives in `user_skills/` permanently. Subsequent runs should use the `user_skills/` path.
 
 ## Scan Scope
 
@@ -48,10 +72,19 @@ The tool scans **all** directories under `~/.hermes/skills/` — including `user
 
 ## Usage
 
+Run directly via Hermes venv Python:
+
 ```bash
+# First run (before self-migration):
+~/.hermes/hermes-agent/venv/bin/python \
+  ~/.hermes/skills/skill-auto-maintain/maintain.py
+
+# Subsequent runs (after self-migration to user_skills/):
 ~/.hermes/hermes-agent/venv/bin/python \
   ~/.hermes/skills/user_skills/skill-auto-maintain/maintain.py
 ```
+
+Or tell your Hermes Agent: *"Run skill auto maintenance"* — the agent will handle it automatically.
 
 ## Scan Scope Change (v1.1.0)
 
@@ -107,5 +140,5 @@ All format changes and quality warnings are reported in the final summary.
 
 | File | Purpose |
 |------|---------|
-| `maintain.py` | The maintenance script (v1.1.0) |
+| `maintain.py` | The maintenance script (v2.0.0) |
 | `SKILL.md` | This file — skill documentation for the agent |
